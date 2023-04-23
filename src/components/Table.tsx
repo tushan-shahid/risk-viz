@@ -58,19 +58,21 @@ const Table: React.FC<TableProps> = ({ data, currentPage, setCurrentPage }) => {
   return (
     <>
       <div>
+        <p className="text-black">Filter by Risk Factor</p>
         {uniqueRiskFactors.map((tag) => (
           <button
             key={tag}
             onClick={() => handleFilterTagClick(tag)}
             className={`${
-              filterTags.includes(tag) ? "bg-gray-300" : "bg-gray-100"
+              filterTags.includes(tag) ? "bg-gray-500" : "bg-gray-300"
             } px-2 py-1 rounded-lg mr-2 mb-2`}
           >
             {tag}
           </button>
         ))}
       </div>
-      <table>
+
+      <table className="text-black m-2">
         <thead>
           <tr>
             <th>Asset Name</th>
