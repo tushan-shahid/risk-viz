@@ -10,8 +10,8 @@ interface MapProps {
 }
 
 const getColorFromRiskRating = (riskRating: number) => {
-  if (riskRating < 2) return "green";
-  if (riskRating < 4) return "yellow";
+  if (riskRating < 0.3) return "green";
+  if (riskRating < 0.7) return "yellow";
   return "red";
 };
 
