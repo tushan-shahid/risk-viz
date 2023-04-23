@@ -53,6 +53,7 @@ const Map: React.FC<MapProps> = ({ data, selectedDecade }) => {
                 `<div class="bg-white text-black ">
                   <p class="font-bold mb-1">Asset Name: <span class="font-normal">${row["Asset Name"]}</span></p>
                   <p class="font-bold">Business Category: <span class="font-normal">${row["Business Category"]}</span></p>
+                  <p class="font-bold">Risk Rating: <span class="font-normal">${row["Risk Rating"]}</span></p>
                 </div>`
               )
             )

@@ -11,6 +11,10 @@ const Table: React.FC<TableProps> = ({ data, currentPage, setCurrentPage }) => {
   const recordsPerPage = 100;
 
   const [filterTags, setFilterTags] = useState<string[]>([]);
+  const [filterDecade, setFilterDecade] = useState<number | null>(null);
+  const [sortByRiskRating, setSortByRiskRating] = useState<
+    "asc" | "desc" | null
+  >(null);
 
   const handlePrevPage = () => {
     if (currentPage > 0) {
@@ -24,6 +28,18 @@ const Table: React.FC<TableProps> = ({ data, currentPage, setCurrentPage }) => {
     }
   };
 
+  const handleDecadeFilter = (decade: number) => {
+    if (filterDecade === decade) {
+      setFilterDecade(null);
+    } else {
+      setFilterDecade(decade);
+    }
+  };
+
+  const toggleRiskRatingSort = () => {
+    setSortByRiskRating(sortByRiskRating === "asc" ? "desc" : "asc");
+  };
+
   const displayData = data
     .filter((row) => {
       if (filterTags.length === 0) {
@@ -32,8 +48,23 @@ const Table: React.FC<TableProps> = ({ data, currentPage, setCurrentPage }) => {
         return filterTags.some((tag) => row["Risk Factors"].includes(tag));
       }
     })
+    .filter((row) => {
+      if (filterDecade === null) {
+        return true;
+      } else {
+        return Math.floor(row.Year / 10) * 10 === filterDecade;
+      }
+    })
+    .sort((a, b) => {
+      if (sortByRiskRating === "asc") {
+        return a["Risk Rating"] - b["Risk Rating"];
+      } else if (sortByRiskRating === "desc") {
+        return b["Risk Rating"] - a["Risk Rating"];
+      } else {
+        return 0;
+      }
+    })
     .slice(currentPage * recordsPerPage, (currentPage + 1) * recordsPerPage);
-
   const uniqueRiskFactors = Array.from(
     new Set(
       data.flatMap((row) =>
@@ -54,6 +85,7 @@ const Table: React.FC<TableProps> = ({ data, currentPage, setCurrentPage }) => {
       setFilterTags([...filterTags, tag]);
     }
   };
+  const decades = [2030, 2040, 2050, 2060, 2070];
 
   return (
     <>
@@ -71,7 +103,30 @@ const Table: React.FC<TableProps> = ({ data, currentPage, setCurrentPage }) => {
           </button>
         ))}
       </div>
+      <div>
+        <p className="text-black">Filter by Decade</p>
+        {decades.map((decade) => (
+          <button
+            key={decade}
+            onClick={() => handleDecadeFilter(decade)}
+            className={`${
+              filterDecade === decade ? "bg-gray-500" : "bg-gray-300"
+            } px-2 py-1 rounded-lg mr-2 mb-2`}
+          >
+            {decade}
+          </button>
+        ))}
+      </div>
 
+      <div>
+        <p className="text-black">Sort by Risk Rating</p>
+        <button
+          onClick={toggleRiskRatingSort}
+          className="px-2 py-1 rounded-lg mr-2 mb-2"
+        >
+          {sortByRiskRating === "asc" ? "Descending" : "Ascending"}
+        </button>
+      </div>
       <table className="text-black m-2">
         <thead>
           <tr>
