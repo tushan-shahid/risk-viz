@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Papa from "papaparse";
 import Table from "../components/Table";
 import Map from "../components/Map";
+import RiskLineGraph from "../components/RiskLineGraph";
 
 export interface CsvData {
   "Asset Name": string;
@@ -20,6 +21,10 @@ const HomePage: React.FC = () => {
   const [showTable, setShowTable] = useState(false);
   const [selectedDecade, setSelectedDecade] = useState(2030);
   const [showMap, setShowMap] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(
+    "Business Category A"
+  );
+  const [showRiskLineGraph, setShowRiskLineGraph] = useState(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -75,7 +80,19 @@ const HomePage: React.FC = () => {
         >
           {showMap ? "Hide Map" : "Show Map"}
         </button>
+        <button
+          onClick={() => setShowRiskLineGraph(!showRiskLineGraph)}
+          className="py-2 px-4 rounded-md bg-blue-500 text-white font-bold"
+        >
+          {showRiskLineGraph ? "Hide Risk Line Graph" : "Show Risk Line Graph"}
+        </button>
       </div>
+      {showRiskLineGraph && csvData && (
+        <div className="mt-8">
+          <RiskLineGraph data={csvData} selectedCategory={selectedCategory} />
+        </div>
+      )}
+
       {showTable && csvData && (
         <Table
           data={csvData}
@@ -106,6 +123,28 @@ const HomePage: React.FC = () => {
             <option value="2050">2050s</option>
             <option value="2060">2060s</option>
             <option value="2070">2070s</option>
+          </select>
+        </div>
+      )}
+      {showRiskLineGraph && csvData && (
+        <div className="flex justify-center mb-4 mt-3">
+          <label
+            htmlFor="business-category-select"
+            className="mr-2 py-2 text-black"
+          >
+            Select business category:
+          </label>
+          <select
+            name="business-category-select"
+            id="business-category-select"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="py-2 px-4  rounded-md bg-white text-blue-900 font-bold"
+          >
+            <option value="All">All</option>
+            <option value="Business Category A">Business Category A</option>
+            <option value="Business Category B">Business Category B</option>
+            <option value="Business Category C">Business Category C</option>
           </select>
         </div>
       )}
