@@ -4,7 +4,6 @@ import Papa from "papaparse";
 import Table from "../components/Table";
 import Map from "../components/Map";
 import RiskLineGraph from "../components/RiskLineGraph";
-
 export interface CsvData {
   "Asset Name": string;
   Lat: number;
@@ -21,9 +20,7 @@ const HomePage: React.FC = () => {
   const [showTable, setShowTable] = useState(false);
   const [selectedDecade, setSelectedDecade] = useState(2030);
   const [showMap, setShowMap] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(
-    "Business Category A"
-  );
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [showRiskLineGraph, setShowRiskLineGraph] = useState(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -142,9 +139,12 @@ const HomePage: React.FC = () => {
             className="py-2 px-4  rounded-md bg-white text-blue-900 font-bold"
           >
             <option value="All">All</option>
-            <option value="Business Category A">Business Category A</option>
-            <option value="Business Category B">Business Category B</option>
-            <option value="Business Category C">Business Category C</option>
+            <option value="Energy">Energy</option>
+            <option value="Technology">Technology</option>
+            <option value="Retail">Retail</option>
+            <option value="Manufacturing">Manufacturing</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Finance">Finance</option>
           </select>
         </div>
       )}

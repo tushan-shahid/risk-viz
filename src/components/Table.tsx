@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CsvData } from "../app/page";
+import { CsvData } from "../pages";
 
 interface TableProps {
   data: CsvData[];

@@ -1,49 +1,70 @@
+import React from "react";
 import {
-  Chart,
-  LineController,
-  LineElement,
-  PointElement,
+  Chart as ChartJS,
+  CategoryScale,
   LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartOptions,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { CsvData } from "../app/page";
-import { ChartOptions } from "chart.js/auto";
+import { CsvData } from "@/pages";
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
-Chart.register(LineController, LineElement, PointElement, LinearScale);
-
-interface RiskLineGraphProps {
+interface ChartProps {
   data: CsvData[];
   selectedCategory: string;
 }
 
-const RiskLineGraph: React.FC<RiskLineGraphProps> = ({
-  data,
-  selectedCategory,
-}) => {
-  const filteredData = data.filter(
-    (item) =>
-      selectedCategory === "All" ||
-      item["Business Category"] === selectedCategory
-  );
+const options: ChartOptions<"line"> = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top",
+    },
+    title: {
+      display: true,
+      text: "Risk Ratings by Year",
+    },
+  },
+  scales: {
+    x: {
+      type: "category",
+      title: {
+        display: true,
+        text: "Year",
+      },
+    },
+    y: {
+      title: {
+        display: true,
+        text: "Risk Rating",
+      },
+    },
+  },
+};
 
-  const aggregatedData: { [year: number]: number[] } = {};
-
-  filteredData.forEach((item) => {
-    if (!aggregatedData[item.Year]) {
-      aggregatedData[item.Year] = [];
-    }
-    aggregatedData[item.Year].push(item["Risk Rating"]);
-  });
+const RiskLineGraph: React.FC<ChartProps> = ({ data }) => {
+  const years = data.map((d) => d.Year);
+  const riskRatings = data.map((d) => d["Risk Rating"]);
 
   const chartData = {
-    labels: Object.keys(aggregatedData).map((year) => +year),
+    labels: years,
     datasets: [
       {
         label: "Risk Rating",
-        data: Object.values(aggregatedData).map(
-          (riskRatings) =>
-            riskRatings.reduce((a, b) => a + b, 0) / riskRatings.length
-        ),
+        data: riskRatings,
         fill: false,
         borderColor: "rgb(75, 192, 192)",
         tension: 0.1,
@@ -51,14 +72,7 @@ const RiskLineGraph: React.FC<RiskLineGraphProps> = ({
     ],
   };
 
-  const options: ChartOptions<"line"> = {
-    scales: {
-      x: {
-        type: "linear",
-      },
-    },
-  };
-  return <Line data={chartData} options={options} />;
+  return <Line options={options} data={chartData} />;
 };
 
 export default RiskLineGraph;
