@@ -20,7 +20,6 @@ const HomePage: React.FC = () => {
   const [showTable, setShowTable] = useState(false);
   const [selectedDecade, setSelectedDecade] = useState(2030);
   const [showMap, setShowMap] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("All");
   const [showRiskLineGraph, setShowRiskLineGraph] = useState(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,7 +85,7 @@ const HomePage: React.FC = () => {
       </div>
       {showRiskLineGraph && csvData && (
         <div className="mt-8">
-          <RiskLineGraph data={csvData} selectedCategory={selectedCategory} />
+          <RiskLineGraph data={csvData} />
         </div>
       )}
 
@@ -120,31 +119,6 @@ const HomePage: React.FC = () => {
             <option value="2050">2050s</option>
             <option value="2060">2060s</option>
             <option value="2070">2070s</option>
-          </select>
-        </div>
-      )}
-      {showRiskLineGraph && csvData && (
-        <div className="flex justify-center mb-4 mt-3">
-          <label
-            htmlFor="business-category-select"
-            className="mr-2 py-2 text-black"
-          >
-            Select business category:
-          </label>
-          <select
-            name="business-category-select"
-            id="business-category-select"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="py-2 px-4  rounded-md bg-white text-blue-900 font-bold"
-          >
-            <option value="All">All</option>
-            <option value="Energy">Energy</option>
-            <option value="Technology">Technology</option>
-            <option value="Retail">Retail</option>
-            <option value="Manufacturing">Manufacturing</option>
-            <option value="Healthcare">Healthcare</option>
-            <option value="Finance">Finance</option>
           </select>
         </div>
       )}

@@ -24,7 +24,6 @@ ChartJS.register(
 
 interface ChartProps {
   data: CsvData[];
-  selectedCategory: string;
 }
 
 const options: ChartOptions<"line"> = {
@@ -56,18 +55,18 @@ const options: ChartOptions<"line"> = {
 };
 
 const RiskLineGraph: React.FC<ChartProps> = ({ data }) => {
-  const years = data.map((d) => d.Year);
+  const year = data.map((d) => d.Year);
   const riskRatings = data.map((d) => d["Risk Rating"]);
 
   const chartData = {
-    labels: years,
+    labels: year,
     datasets: [
       {
         label: "Risk Rating",
         data: riskRatings,
         fill: false,
         borderColor: "rgb(75, 192, 192)",
-        tension: 0.1,
+        tension: 0.4,
       },
     ],
   };
