@@ -3,6 +3,7 @@ import Papa from "papaparse";
 import Table from "../components/Table";
 import Map from "../components/Map";
 import RiskLineGraph from "../components/RiskLineGraph";
+
 export interface CsvData {
   "Asset Name": string;
   Lat: number;
@@ -33,16 +34,15 @@ const HomePage: React.FC = () => {
     });
   };
 
-  const handleShowTable = () => {
+  const toggleComponent = (component: string) => {
     if (csvData) {
-      setShowTable(!showTable);
-    } else {
-      alert("Please upload a CSV file.");
-    }
-  };
-  const handleShowMap = () => {
-    if (csvData) {
-      setShowMap(!showMap);
+      if (component === "table") {
+        setShowTable(!showTable);
+      } else if (component === "map") {
+        setShowMap(!showMap);
+      } else if (component === "riskLineGraph") {
+        setShowRiskLineGraph(!showRiskLineGraph);
+      }
     } else {
       alert("Please upload a CSV file.");
     }
@@ -68,24 +68,23 @@ const HomePage: React.FC = () => {
         />
       </div>
       <div className="flex justify-center space-x-4 mb-4">
-        <button
-          onClick={handleShowTable}
-          className="py-2 px-4 rounded-md bg-blue-500 text-white font-bold"
-        >
-          {showTable ? "Hide Table" : "Show Table"}
-        </button>
-        <button
-          onClick={handleShowMap}
-          className="py-2 px-4 rounded-md bg-blue-500 text-white font-bold"
-        >
-          {showMap ? "Hide Map" : "Show Map"}
-        </button>
-        <button
-          onClick={() => setShowRiskLineGraph(!showRiskLineGraph)}
-          className="py-2 px-4 rounded-md bg-blue-500 text-white font-bold"
-        >
-          {showRiskLineGraph ? "Hide Risk Line Graph" : "Show Risk Line Graph"}
-        </button>
+        {[
+          { label: "Table", state: showTable, component: "table" },
+          { label: "Map", state: showMap, component: "map" },
+          {
+            label: "Risk Line Graph",
+            state: showRiskLineGraph,
+            component: "riskLineGraph",
+          },
+        ].map(({ label, state, component }) => (
+          <button
+            key={label}
+            onClick={() => toggleComponent(component)}
+            className="py-2 px-4 rounded-md bg-blue-500 text-white font-bold"
+          >
+            {state ? `Hide ${label}` : `Show ${label}`}
+          </button>
+        ))}
       </div>
       {showRiskLineGraph && csvData && (
         <div className="mt-8">
@@ -116,13 +115,13 @@ const HomePage: React.FC = () => {
               const newDecade = parseInt(e.target.value, 10);
               setSelectedDecade(newDecade);
             }}
-            className="py-2 px-4  rounded-md bg-white text-blue-900 font-bold"
+            className="py-2 px-4 rounded-md bg-white text-blue-900 font-bold"
           >
-            <option value="2030">2030s</option>
-            <option value="2040">2040s</option>
-            <option value="2050">2050s</option>
-            <option value="2060">2060s</option>
-            <option value="2070">2070s</option>
+            {["2030", "2040", "2050", "2060", "2070"].map((decade) => (
+              <option key={decade} value={decade}>
+                {decade}s
+              </option>
+            ))}
           </select>
         </div>
       )}
