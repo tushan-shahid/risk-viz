@@ -54,6 +54,11 @@ const HomePage: React.FC = () => {
       <h1 className="text-4xl font-bold text-center text-blue-900 mb-8">
         Risk Viz
       </h1>
+      <p className="text-center text-blue-800 mb-4">
+        Upload a CSV file containing columns: Asset Name, Lat, Long, Business
+        Category, Risk Rating, Risk Factors, Year. Click the buttons to
+        visualize the data.
+      </p>
       <div className="mb-4 flex justify-center">
         <input
           type="file"
