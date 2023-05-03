@@ -59,6 +59,9 @@ const HomePage: React.FC = () => {
         visualize the data.
       </p>
       <div className="mb-4 flex justify-center">
+        <label htmlFor="file" className="mr-2 py-2 text-black">
+          Upload CSV file:
+        </label>
         <input
           type="file"
           name="file"
